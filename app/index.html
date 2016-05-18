@@ -1,0 +1,81 @@
+<!doctype html>
+<html ng-app="bm-share-app">
+<head>
+	<title>Bookmark-Share</title>
+
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+
+	<script src="lib/jquery/dist/jquery.js"></script>
+	<script src="lib/jquery/dist/jquery.min.js"></script>
+	<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/angular-chrome-storage/angular-chrome-storage.js"></script>
+	<script src="lib/firebase/firebase.js"></script>
+	<script src="lib/angularfire/dist/angularfire.js"></script>
+
+	<script src="app.js"></script>
+</head>
+<body ng-controller="AppCtrl">
+	
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		  <a class="navbar-brand">Bookmark-share</a>
+		</div>
+		<div class="navbar-right nav navbar-nav">
+			<li>
+			  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#settingsModal">Settings</button>
+		  	</li>
+			<li><a></a></li>
+		</div>
+	  </div>
+	</nav>
+
+	<!-- Modal -->
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+	      </div>
+	      <div class="modal-body">
+			<form class="form-horizontal">
+				<div class="form-group">
+				    <label for="inputEmail3" class="col-sm-3 control-label">Name</label>
+				    <div class="col-sm-9">
+				      <input required type="text" class="form-control" ng-model="form.name" id="inputEmail3" placeholder="Name">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <label for="inputPassword3" class="col-sm-3 control-label">DB Address</label>
+				    <div class="col-sm-9">
+				      <input required type="text" class="form-control" ng-model="form.address" id="inputPassword3" placeholder="Address">
+				    </div>
+				</div>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveSettings()">Save</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="container">
+		<div class="list-group">
+			<a ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data">
+				<span>
+					<button class="close" ng-click="delItem($index)">&times;</button>
+					<h4 class="list-group-item-heading">{{ link.name }}</h4>
+				</span>
+			    <p class="list-group-item-text">{{ link.addedBy || "" }}</p>
+			</a>
+		</div>
+	</div>
+
+		
+</body>	
+</html>
