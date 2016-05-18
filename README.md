@@ -10,4 +10,5 @@
 1. Launch the app by clicking the Icon from the Extension Bar
 2. First time when you open, select 'Settings' from the top right corner of the app
 3. Add your Name and set the 'DB Address' to 'office'
+3. Press 'Save' and relaunch the app
 4. To share a website, right click on the page you want to share and click 'Share this Page'
