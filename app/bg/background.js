@@ -11,10 +11,6 @@ var data = {
 
 data.firebaseUrl = 'https://bm-share.firebaseio.com/bm-share/' + data.address;
 
-console.log(data.address);
-console.log(data.user);
-console.log(data.firebaseUrl);
-
 function createWindow() {
   chrome.windows.create({
       url: data.htmlPage,
@@ -33,7 +29,6 @@ function add(info,tab) {
   firebaseRef.push({name: tab.title, url: tab.url, addedBy: data.user});
   firebaseRef.limitToLast(1).on('value', function(snapshot) {
     new_note(snapshot);
-    console.log(snapshot);
   })
 }
 
@@ -66,7 +61,7 @@ function new_note(snapshot) {
     isClickable: true
   }
 
-  chrome.notifications.create('main_not', id);
+  chrome.notifications.create('bm-share-notification', id);
 
   chrome.notifications.onClicked.addListener(function(callback) {
     chrome.tabs.create({
@@ -75,7 +70,7 @@ function new_note(snapshot) {
     });
   });
 
-  chrome.notifications.clear('main_not');
+  chrome.notifications.clear('bm-share-notification');
 };
 
 })(chrome);
