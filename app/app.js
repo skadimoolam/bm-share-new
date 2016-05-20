@@ -5,6 +5,7 @@ angular.module('bm-share-app', ['firebase'])
 
 
 .controller('AppCtrl', function($scope, $firebaseArray, LocalDataService) {
+	$scope.formErrorShow = false;
 	$scope.addForm = {};
 	$scope.addModeText = true;
 	$scope.addModeLink = false;
@@ -52,15 +53,20 @@ angular.module('bm-share-app', ['firebase'])
 	}
 
 	$scope.addNew = function() {
-		// console.log($scope.addForm);
-		$scope.data.$add({
-			name: $scope.addForm.name || $scope.addForm.text,
-			url: $scope.addForm.url ? $scope.addForm.url : '',
-			addedBy: LocalDataService.getName()
-		});
-		$scope.addForm = {};
-		$scope.addModeText = true;
-		$scope.addModeLink = false;
+		if ($scope.addForm.name || $scope.addForm.text) {
+			$scope.data.$add({
+				name: $scope.addForm.name || $scope.addForm.text,
+				url: $scope.addForm.url ? $scope.addForm.url : '',
+				addedBy: LocalDataService.getName()
+			});
+
+			$scope.addForm = {};
+			$scope.addModeText = true;
+			$scope.addModeLink = false;
+			$scope.formErrorShow = false;
+		} else {
+			$scope.formErrorShow = true;
+		}
 	}
 })
 
