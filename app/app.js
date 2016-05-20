@@ -5,6 +5,11 @@ angular.module('bm-share-app', ['firebase'])
 
 
 .controller('AppCtrl', function($scope, $firebaseArray, LocalDataService) {
+	$scope.addForm = {};
+	$scope.addModeText = true;
+	$scope.addModeLink = false;
+
+	$scope.limitNo = 25;
 
 	$scope.form = {
 		name: LocalDataService.getName(),
@@ -14,7 +19,8 @@ angular.module('bm-share-app', ['firebase'])
 	var
 		address = LocalDataService.getAddress(),
 		firebaseUrl = 'https://bm-share.firebaseio.com/bm-share/' + address,
-		firebaseRef = $firebaseArray(new Firebase(firebaseUrl));
+		ref = new Firebase(firebaseUrl),
+		firebaseRef = $firebaseArray(ref);
 
 	firebaseRef.$loaded(function(snapshot) {
 		firebaseRef = firebaseRef.reverse();
@@ -29,13 +35,32 @@ angular.module('bm-share-app', ['firebase'])
 		});
 	};
 
-	$scope.delItem = function(itemId) {
-		console.log(itemId);
-		$scope.data.$remove(itemId).then(function(ref) { ref.key() === item.$id; });
+	$scope.delItem = function(item) {
+		$scope.data.$remove(item).then(function(ref) { ref.key() === item.$id; });
 	};
 
 	$scope.saveSettings = function () {
 		LocalDataService.setData($scope.form.name, $scope.form.address)
+	}
+
+	$scope.limitTo = function(numb) {
+		if (angular.isNumber(numb)) {
+			$scope.limitNo = numb;
+		} else {
+			$scope.limitNo = 25;
+		}
+	}
+
+	$scope.addNew = function() {
+		// console.log($scope.addForm);
+		$scope.data.$add({
+			name: $scope.addForm.name || $scope.addForm.text,
+			url: $scope.addForm.url ? $scope.addForm.url : '',
+			addedBy: LocalDataService.getName()
+		});
+		$scope.addForm = {};
+		$scope.addModeText = true;
+		$scope.addModeLink = false;
 	}
 })
 

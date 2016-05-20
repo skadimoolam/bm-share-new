@@ -18,26 +18,99 @@
 <body ng-controller="AppCtrl">
 	
 	<nav class="navbar navbar-default">
-	  <div class="container-fluid">
-		<div class="navbar-header">
-		  <a class="navbar-brand">Bookmark-share</a>
+		<div class="container">	
+			<div class="navbar-header">
+			  <a class="navbar-brand">Bookmark-share</a>
+			</div>
+			<div class="container-fluid">
+				<div class="navbar-right nav navbar-nav">
+					<li>
+					  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#addModal">Add</button>				
+					</li>
+					<li style="margin-left: 5px">
+					  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#settingsModal">Settings</button>
+			  	</li>
+			  	<li class="dropdown" style="margin-left: 5px">
+						<button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+						<ul class="dropdown-menu">
+	            <li><a href="#" ng-click="limitTo(25)">25</a></li>
+	            <li><a href="#" ng-click="limitTo(50)">50</a></li>
+	            <li><a href="#" ng-click="limitTo(100)">100</a></li>
+	            <li><a href="#" ng-click="limitTo(100000)">All</a></li>
+	          </ul>
+			  	</li>
+				</div>
+			</div>
 		</div>
-		<div class="navbar-right nav navbar-nav">
-			<li>
-			  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#settingsModal">Settings</button>
-		  	</li>
-			<li><a></a></li>
-		</div>
-	  </div>
 	</nav>
 
-	<!-- Modal -->
-	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+	<!-- Modal Add -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+	        <h4 class="modal-title" id="addModal">Add</h4>
+	      </div>
+	      <div class="modal-body">
+		      <div class="container">
+						<div class="row">
+						  <div class="col-xs-2.5 col-xs-offset-4">
+								<div class="btn-group" role="group">
+								  <button type="button" class="btn btn-default" ng-click="addModeLink = true; addModeText = false;">Link</button>
+								  <button type="button" class="btn btn-default" ng-click="addModeText = true; addModeLink = false">Text</button>
+								</div>
+						  </div>
+						</div>
+					</div>
+					<div style="padding-top: 10px" >
+						<div ng-if="addModeLink">
+							<form class="form-horizontal">
+								<div class="form-group">
+							    <label for="fromAddLinkName" class="col-sm-2 control-label">Title:</label>
+							    <div class="col-sm-10">
+							      <input ng-model="addForm.name" type="text" class="form-control" id="fromAddLinkName" placeholder="Page Title" required >
+							    </div>
+							  </div>
+							  <div class="form-group">
+							    <label for="fromAddLinkUrl" class="col-sm-2 control-label">url:</label>
+							    <div class="col-sm-10">
+							      <input ng-model="addForm.url" type="text" class="form-control" id="fromAddLinkUrl" placeholder="Page url" required >
+							    </div>
+							  </div>
+							</form>
+						</div>
+						<div ng-if="addModeText">
+							<form class="form-horizontal">
+								<div class="form-group">
+							    <label for="fromAddText" class="col-sm-2 control-label">Text:</label>
+							    <div class="col-sm-10">
+							      <input ng-model="addForm.text" type="text" class="form-control" id="fromAddText" placeholder="Text" required >
+							    </div>
+							  </div>
+							</form>
+						</div>
+					</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addNew()">Add</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal Add End-->
+
+
+
+	<!-- Modal Settings -->
+	<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="settingsModal">Settings</h4>
 	      </div>
 	      <div class="modal-body">
 			<form class="form-horizontal">
@@ -62,12 +135,14 @@
 	    </div>
 	  </div>
 	</div>
+	<!-- Modal Settings End-->
+
 
 	<div class="container">
 		<div class="list-group">
-			<a ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data">
+			<a ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo">
 				<span>
-					<button class="close" ng-click="delItem($index)">&times;</button>
+					<button class="close" ng-click="delItem(link)">&times;</button>
 					<h4 class="list-group-item-heading">{{ link.name }}</h4>
 				</span>
 			    <p class="list-group-item-text">{{ link.addedBy || "" }}</p>
