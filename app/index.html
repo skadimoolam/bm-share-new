@@ -24,7 +24,10 @@
 			</div>
 			<div class="container-fluid">
 				<div class="navbar-right nav navbar-nav">
-					<li>
+					<li style="padding: 0" class="navbar-form">
+				    <input type="text" class="form-control" placeholder="Search" ng-model="searchQuery">
+					</li>
+					<li style="margin-left: 5px">
 					  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#addModal">Add</button>				
 					</li>
 					<li style="margin-left: 5px">
@@ -142,7 +145,7 @@
 
 	<div class="container">
 		<div class="list-group">
-			<a ng-hide="data.length == 0" ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo">
+			<a ng-hide="data.length == 0" ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo | filter: searchQuery">
 				<span>
 					<button class="close" ng-click="delItem(link)">&times;</button>
 					<h4 class="list-group-item-heading">{{ link.name }}</h4>
