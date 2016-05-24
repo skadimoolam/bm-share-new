@@ -14,10 +14,19 @@
 	<script src="lib/angularfire/dist/angularfire.js"></script>
 
 	<script src="app.js"></script>
+
+	<style>
+		body {
+		 padding-top: 70px;
+		}
+		::-webkit-scrollbar{background:transparent;overflow:visible;width:10px;}
+		::-webkit-scrollbar-thumb:vertical{background-color:rgba(0,0,0,0.2);border-bottom:3.5px solid #fff;border-left:2px solid #fff;border-right:2px solid #fff;border-top:3.5px solid #fff;height:1px}
+		::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,0.4)}
+	</style>
 </head>
 <body ng-controller="AppCtrl">
 	
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">	
 			<div class="navbar-header">
 			  <a class="navbar-brand">Bookmark-share ({{ :: form.address | uppercase }})</a>
@@ -143,20 +152,22 @@
 	<!-- Modal Settings End-->
 
 
-	<div class="container">
-		<div class="list-group">
-			<a ng-hide="data.length == 0" ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo | filter: searchQuery">
-				<span>
-					<button class="close" ng-click="delItem(link)">&times;</button>
-					<h4 class="list-group-item-heading">{{ link.name }}</h4>
-				</span>
-		    <p class="list-group-item-text">{{ link.addedBy || "" }}</p>
-			</a>
+	<div id="contents">
+		<div class="container">
+			<div class="list-group">
+				<a ng-hide="data.length == 0" ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo | filter: searchQuery" style="padding: 3px 15px; white-space:nowrap">
+					<span>
+						<button class="close" ng-click="delItem(link)">&times;</button>
+						<h4 class="list-group-item-heading">{{ link.name | limitTo: 80}}</h4>
+					</span>
+			    <p class="list-group-item-text">{{ link.addedBy || "" }}</p>
+				</a>
+			</div>
 		</div>
-	</div>
-	<div ng-show="data.length == 0" class="container">
-		<div class="jumbotron text-center">
-			<p>There are no links shared in this group</p>
+		<div ng-show="data.length == 0" class="container">
+			<div class="jumbotron text-center">
+				<p>There are no links shared in this group</p>
+			</div>
 		</div>
 	</div>
 

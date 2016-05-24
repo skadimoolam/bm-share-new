@@ -25,6 +25,10 @@ chrome.browserAction.onClicked.addListener(function(tabs) {
   }
 });
 
+chrome.windows.onRemoved.addListener(function(windowID) {
+  data.popupId = undefined;
+})
+
 
 var firebaseRef = new Firebase(data.firebaseUrl);
 firebaseRef.limitToLast(1).on('child_added', function(snapshot) {
