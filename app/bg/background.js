@@ -1,6 +1,7 @@
 (function(chrome, Firebase) {
 
 var data = {
+  popupId: undefined,
   htmlPage: "./app/index.html",
   width: 800,
   height: 500,
@@ -11,18 +12,17 @@ var data = {
 
 data.firebaseUrl = 'https://bm-share.firebaseio.com/bm-share/' + data.address;
 
-function createWindow() {
-  chrome.windows.create({
+chrome.browserAction.onClicked.addListener(function(tabs) {
+  if (typeof data.popupId === "undefined") {
+    chrome.windows.create({
       url: data.htmlPage,
       type: "panel",
       width: data.width,
       height: data.height
-  });
-};
-
-
-chrome.browserAction.onClicked.addListener(function(tabs) {
-  createWindow();
+    }, function(popupWindow) { data.popupId = popupWindow.id; });
+  } else {
+    chrome.windows.update(data.popupId, {"focused": true});
+  }
 });
 
 
