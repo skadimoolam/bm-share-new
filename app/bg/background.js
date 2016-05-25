@@ -1,6 +1,7 @@
-(function(chrome) {
+(function(chrome, Firebase) {
 
 var data = {
+  popupId: undefined,
   htmlPage: "./app/index.html",
   width: 800,
   height: 500,
@@ -11,25 +12,32 @@ var data = {
 
 data.firebaseUrl = 'https://bm-share.firebaseio.com/bm-share/' + data.address;
 
-function createWindow() {
-  chrome.windows.create({
+chrome.browserAction.onClicked.addListener(function(tabs) {
+  if (typeof data.popupId === "undefined") {
+    chrome.windows.create({
       url: data.htmlPage,
       type: "panel",
       width: data.width,
       height: data.height
-  });
-};
-
-chrome.browserAction.onClicked.addListener(function(tabs) {
-  createWindow();
+    }, function(popupWindow) { data.popupId = popupWindow.id; });
+  } else {
+    chrome.windows.update(data.popupId, {"focused": true});
+  }
 });
 
+chrome.windows.onRemoved.addListener(function(windowID) {
+  data.popupId = undefined;
+})
+
+
+var firebaseRef = new Firebase(data.firebaseUrl);
+firebaseRef.limitToLast(1).on('child_added', function(snapshot) {
+  new_note(snapshot);
+})
+
+
 function add(info,tab) {
-  var firebaseRef = new Firebase(data.firebaseUrl);
   firebaseRef.push({name: tab.title, url: tab.url, addedBy: data.user});
-  firebaseRef.limitToLast(1).on('value', function(snapshot) {
-    new_note(snapshot);
-  })
 }
 
 chrome.contextMenus.create({
@@ -40,18 +48,9 @@ chrome.contextMenus.create({
 
 function new_note(snapshot) {
   var 
-    msg = null,
-    addedBy = null,
-    url = null;
-
-  for (var key in snapshot.val()) {
-    msg = snapshot.val()[key].name;
-    url = snapshot.val()[key].url;
-    addedBy = snapshot.val()[key].addedBy || "";
-  }
-
-  console.log(snapshot.val());
-  console.log(typeof snapshot.val());
+    msg = snapshot.val().name,
+    addedBy = snapshot.val().addedBy || "",
+    url = snapshot.val().url || "";
 
   var id = {
     type: "basic",
@@ -63,14 +62,16 @@ function new_note(snapshot) {
 
   chrome.notifications.create('bm-share-notification', id);
 
-  chrome.notifications.onClicked.addListener(function(callback) {
-    chrome.tabs.create({
-      url: url,
-      active: true
+  if (url != "") {
+    chrome.notifications.onClicked.addListener(function(callback) {
+      chrome.tabs.create({
+        url: url,
+        active: true
+      });
     });
-  });
+  }
 
   chrome.notifications.clear('bm-share-notification');
 };
 
-})(chrome);
+})(chrome, Firebase);
