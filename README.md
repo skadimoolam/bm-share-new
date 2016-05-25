@@ -1,4 +1,4 @@
-# Simple Chrome App to share Website links
+# Simple Chrome App to share Website links between a group
 
 ## Installation
 1. Clone or Download this project and extract it to a folder
