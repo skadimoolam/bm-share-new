@@ -1,6 +1,6 @@
 {
   "name": "Bookmark-Share",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "manifest_version": 2,
   "description": "Simple Bookmark sharing tool",
   "content_security_policy": "script-src 'self' https://*.firebaseio.com; object-src 'self'",
