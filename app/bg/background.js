@@ -8,7 +8,7 @@ var data = {
   address: localStorage.getItem('bm-address') === "undefined" ? 'office' : localStorage.getItem('bm-address'),
   user: localStorage.getItem('bm-user') === "undefined" ? 'Default' : localStorage.getItem('bm-user'),
   iconUrl: "../../icon.png"
-}
+};
 
 data.firebaseUrl = 'https://bm-share.firebaseio.com/bm-share/' + data.address;
 
@@ -27,13 +27,14 @@ chrome.browserAction.onClicked.addListener(function(tabs) {
 
 chrome.windows.onRemoved.addListener(function(windowID) {
   data.popupId = undefined;
-})
+});
 
 
 var firebaseRef = new Firebase(data.firebaseUrl);
 firebaseRef.limitToLast(1).on('child_added', function(snapshot) {
+  console.log(snapshot);
   new_note(snapshot);
-})
+});
 
 
 function add(info,tab) {
@@ -41,13 +42,15 @@ function add(info,tab) {
 }
 
 chrome.contextMenus.create({
-  title: "Share this Page", 
+  title: "Share this Page",
   contexts:["all"],
   onclick: add
 });
 
 function new_note(snapshot) {
-  var 
+  console.log(snapshot);
+
+  var
     msg = snapshot.val().name,
     addedBy = snapshot.val().addedBy || "",
     url = snapshot.val().url || "";
@@ -58,20 +61,21 @@ function new_note(snapshot) {
     message: msg + " - " + addedBy,
     iconUrl: data.iconUrl,
     isClickable: true
-  }
+  };
 
   chrome.notifications.create('bm-share-notification', id);
 
-  if (url != "") {
-    chrome.notifications.onClicked.addListener(function(callback) {
-      chrome.tabs.create({
-        url: url,
-        active: true
-      });
-    });
-  }
+  // if (url !== "") {
+  //   chrome.notifications.onClicked.addListener(function(callback) {
+  //     console.log(msg, url, addedBy);
+  //     chrome.tabs.create({
+  //       url: url,
+  //       active: true
+  //     });
+  //   });
+  // }
 
   chrome.notifications.clear('bm-share-notification');
-};
+}
 
 })(chrome, Firebase);
