@@ -4,7 +4,7 @@
 angular.module('bm-share-app', ['firebase'])
 
 
-.controller('AppCtrl', function($scope, $firebaseArray, LocalDataService) {
+.controller('AppCtrl', [ '$scope', '$firebaseArray', 'LocalDataService', function($scope, $firebaseArray, LocalDataService) {
 	$scope.formErrorShow = false;
 	$scope.addForm = {};
 	$scope.addModeText = true;
@@ -68,7 +68,7 @@ angular.module('bm-share-app', ['firebase'])
 			$scope.formErrorShow = true;
 		}
 	}
-})
+}])
 
 
 

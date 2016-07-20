@@ -8,7 +8,7 @@
     "128": "icon.png"
   },
   "background": {
-    "page": "./app/bg/background.html",
+    "page": "./app/dist/bg/background.min.html",
     "persistent": true
   },
   "browser_action": {

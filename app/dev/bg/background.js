@@ -2,7 +2,7 @@
 
 var data = {
   popupId: undefined,
-  htmlPage: "./app/index.html",
+  htmlPage: "./app/dist/index.min.html",
   width: 800,
   height: 500,
   address: localStorage.getItem('bm-address') === "undefined" ? 'office' : localStorage.getItem('bm-address'),

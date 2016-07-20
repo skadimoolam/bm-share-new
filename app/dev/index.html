@@ -3,17 +3,17 @@
 <head>
 	<title>Bookmark-Share</title>
 
-	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css">
 
-	<script src="lib/jquery/dist/jquery.js"></script>
-	<script src="lib/jquery/dist/jquery.min.js"></script>
-	<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../lib/jquery/dist/jquery.js"></script>
+	<script src="../lib/jquery/dist/jquery.min.js"></script>
+	<script src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-	<script src="lib/angular/angular.min.js"></script>
-	<script src="lib/firebase/firebase.js"></script>
-	<script src="lib/angularfire/dist/angularfire.js"></script>
+	<script src="../lib/angular/angular.min.js"></script>
+	<script src="../lib/firebase/firebase.js"></script>
+	<script src="../lib/angularfire/dist/angularfire.min.js"></script>
 
-	<script src="app.js"></script>
+	<script src="app.min.js"></script>
 
 	<style>
 		body {
@@ -157,7 +157,7 @@
 			<div class="list-group">
 				<a ng-hide="data.length == 0" ng-click="openUrl(link.url)" href="" class="list-group-item" ng-repeat="link in data | limitTo: limitNo | filter: searchQuery" style="padding: 3px 15px; white-space:nowrap">
 					<span>
-						<button class="close" ng-click="delItem(link)">&times;</button>
+						<button class="close" ng-if="link.addedBy === form.name" ng-click="delItem(link)">&times;</button>
 						<h4 class="list-group-item-heading">{{ link.name | limitTo: 80}}</h4>
 					</span>
 			    <p class="list-group-item-text">{{ link.addedBy || "" }}</p>
